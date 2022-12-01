@@ -24,7 +24,7 @@ const JobsAccordion = ({ job }) => {
   const message =
     'Hi, Vantastic Barber is arriving soon. Help us manage our time better please be ready for your booked service. We appreciate your help.';
   const reviewMsg =
-    'Thanks for booking Vantastic Barber. Love our work? Please review us: g.page/r/CQW1vN_1-nmGEAI/review Any suggestions? Please email info@vantasticbarber.com.au';
+    'Thanks for booking Vantastic, Love our work? Please review us: https://g.page/r/CQW1vN_1-nmGEBM/review Any suggestions? Please email info@vantasticbarber.com.au';
 
   const handleGo = async () => {
     try {
