@@ -1,6 +1,7 @@
 const { body } = require('express-validator');
 
 const registerValidation = [
+  body('fullName', 'Please enter a valid full name').isLength({ min: 1 }),
   body('username', 'Name must contain atleast 2 characters').isLength({ min: 2 }),
   body('password', 'Password field is required').isLength({ min: 1 }),
 ];

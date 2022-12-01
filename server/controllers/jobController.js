@@ -25,7 +25,7 @@ const fetchJobsbyDate = async (req, res) => {
 //Add New Job
 const addJob = async (req, res) => {
   const { isAdmin, _id: admin } = req.user;
-  const { barber, name, address, phone, service, to, from, date } = req.body;
+  const { barber, name, address, phone, service, to, from, date, price } = req.body;
 
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -45,6 +45,7 @@ const addJob = async (req, res) => {
         date,
         to,
         from,
+        price,
       });
       const fullJob = await Job.findOne({ _id: job._id }).populate('barber', '-password');
       res.status(201).json(fullJob);
@@ -78,7 +79,7 @@ const deleteJob = async (req, res) => {
 const updateJob = async (req, res) => {
   const { id } = req.params;
   const { isAdmin } = req.user;
-  const { barber, name, address, phone, service, date, to, from } = req.body;
+  const { barber, name, address, phone, service, date, to, from, price } = req.body;
 
   try {
     if (isAdmin) {
@@ -92,6 +93,7 @@ const updateJob = async (req, res) => {
         date,
         to,
         from,
+        price,
       };
       const job = await Job.findByIdAndUpdate(id, newJob, { new: true }).populate(
         'barber',

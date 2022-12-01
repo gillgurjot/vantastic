@@ -28,6 +28,7 @@ const JobCard = ({ job }) => {
           <Text>Address: {job.address}</Text>
           <Text>Phone: {job.phone}</Text>
           <Text>Services: {job.service}</Text>
+          <Text>Price: ${job.price.$numberDecimal}</Text>
           <Text>Date: {getDate(job.date)}</Text>
           <Text>
             Time: {convertTime(job.from)} to {convertTime(job.to)}

@@ -4,11 +4,11 @@ const connectDb = require('./config/db');
 const cors = require('cors');
 const authRoutes = require('./routes/authRoutes');
 const jobRoutes = require('./routes/jobRoutes');
-// const userRoutes = require('./routes/userRoutes');
 
 const app = express();
 dotenv.config();
 app.use(express.json());
+app.use(cors({ origin: process.env.URL }));
 app.use(cors());
 connectDb();
 
@@ -21,7 +21,6 @@ app.get('/', function (req, res) {
 //Available Routes
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/job', jobRoutes);
-// app.use('/api/v1/user', userRoutes);
 
 app.listen(port, () => {
   console.log(`Server listening on ${port}`);

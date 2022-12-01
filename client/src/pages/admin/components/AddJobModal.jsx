@@ -29,6 +29,7 @@ const initialState = {
   date: '',
   from: '',
   to: '',
+  price: '',
 };
 
 const AddJobModal = ({ children }) => {
@@ -48,7 +49,7 @@ const AddJobModal = ({ children }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { barber, name, address, phone, service, date, from, to } = newJob;
+    const { barber, name, address, phone, service, date, from, to, price } = newJob;
     if (
       barber == '' ||
       name == '' ||
@@ -57,7 +58,8 @@ const AddJobModal = ({ children }) => {
       service == '' ||
       date == '' ||
       from == '' ||
-      to == ''
+      to == '' ||
+      price == ''
     ) {
       toast({
         title: 'All Fields Are Required..!!',
@@ -184,6 +186,17 @@ const AddJobModal = ({ children }) => {
                     Haircut + Face Scrub + Facewax Combo
                   </option>
                 </Select>
+              </FormControl>
+
+              <FormControl mt={4}>
+                <FormLabel>Price</FormLabel>
+                <Input
+                  name='price'
+                  value={newJob.price}
+                  onChange={handleChange}
+                  type='number'
+                  placeholder='Price'
+                />
               </FormControl>
 
               <FormControl mt={4}>

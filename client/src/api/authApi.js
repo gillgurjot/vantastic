@@ -1,8 +1,7 @@
 import axios from 'axios';
 
 const authApi = axios.create({
-  // baseURL: 'http://localhost:5000/api/v1/auth',
-  baseURL: 'https://vantastic-server.onrender.com/api/v1/auth',
+  baseURL: import.meta.env.VITE_AUTH_URL,
 });
 
 export const userLogin = async (user) => {

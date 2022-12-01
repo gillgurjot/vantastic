@@ -6,10 +6,6 @@ const jobModel = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
     },
-    // barberName: {
-    //   type: String,
-    //   required: true,
-    // },
     admin: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
@@ -28,6 +24,10 @@ const jobModel = mongoose.Schema(
     },
     service: {
       type: String,
+      required: true,
+    },
+    price: {
+      type: mongoose.Decimal128,
       required: true,
     },
     date: {

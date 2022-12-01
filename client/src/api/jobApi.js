@@ -1,8 +1,7 @@
 import axios from 'axios';
 
 const jobApi = axios.create({
-  // baseURL: 'http://localhost:5000/api/v1/job',
-  baseURL: 'https://vantastic-server.onrender.com/api/v1/job',
+  baseURL: import.meta.env.VITE_JOB_URL,
 });
 
 export const addJob = async (job, token) => {
