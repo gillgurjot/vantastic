@@ -173,7 +173,7 @@ const AddJobModal = ({ children }) => {
                 >
                   <option value='Haircut'>Haircut</option>
                   <option value='Fade Haircut'>Fade Haircut</option>
-                  <option value='Haircut and Beard Combo'>Haircut and Beard Combo</option>
+                  <option value='Haircut and Beard $60'>Haircut and Beard $60</option>
                   <option value='Beard'>Beard</option>
                   <option value='Haircut + Beard + Face wax + Face Scrub'>
                     Haircut + Beard + Face wax + Face Scrub
@@ -182,8 +182,8 @@ const AddJobModal = ({ children }) => {
                   <option value='Beard + Face wax + Face Scrub'>
                     Beard + Face wax + Face Scrub
                   </option>
-                  <option value='Haircut + Face Scrub + Facewax Combo'>
-                    Haircut + Face Scrub + Facewax Combo
+                  <option value='Haircut + Beard $45'>
+                    Haircut + Beard $45
                   </option>
                 </Select>
               </FormControl>

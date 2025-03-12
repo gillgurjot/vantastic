@@ -95,7 +95,7 @@ const JobsAccordion = ({ job }) => {
         <Flex justifyContent='space-between' mt={5}>
           <Button
             as='a'
-            href={`tel:0${phone}`}
+            href={`tel:+61${phone}`}
             colorScheme='orange'
             w='30%'
             rightIcon={<BsFillTelephoneFill />}
