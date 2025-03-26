@@ -1,0 +1,30 @@
+[
+    {
+        "value": "Haircut",
+        "label": "Haircut"
+    },
+    {
+        "value": "Beard Trim",
+        "label": "Beard Trim"
+    },
+    {
+        "value": "Zero Fade",
+        "label": "Zero Fade"
+    },
+    {
+        "value": "Cheek's Wax",
+        "label": "Cheek's Wax"
+    },
+    {
+        "value": "Forehead Wax",
+        "label": "Forehead Wax"
+    },
+    {
+        "value": "Ear Wax",
+        "label": "Ear Wax"
+    },
+    {
+        "value": "Face Scrub",
+        "label": "Face Scrub"
+    }
+]

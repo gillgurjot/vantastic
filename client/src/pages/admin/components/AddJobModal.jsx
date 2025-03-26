@@ -11,25 +11,26 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Select,
   useDisclosure,
   useToast,
-} from '@chakra-ui/react';
-import React, { useState } from 'react';
-import { addJob } from '../../../api/jobApi';
-import { useDispatch, useSelector } from 'react-redux';
-import { addNewJob } from '../../../redux/slices/jobSlice';
+} from "@chakra-ui/react";
+import React, { useState } from "react";
+import { addJob } from "../../../api/jobApi";
+import { useDispatch, useSelector } from "react-redux";
+import { addNewJob } from "../../../redux/slices/jobSlice";
+import Select from "react-select";
+import serviceOptions from "../../../data/services.json";
 
 const initialState = {
-  barber: '',
-  name: '',
-  address: '',
-  phone: '',
-  service: '',
-  date: '',
-  from: '',
-  to: '',
-  price: '',
+  barber: "",
+  name: "",
+  address: "",
+  phone: "",
+  service: "",
+  date: "",
+  from: "",
+  to: "",
+  price: "",
 };
 
 const AddJobModal = ({ children }) => {
@@ -37,6 +38,7 @@ const AddJobModal = ({ children }) => {
   const [newJob, setNewJob] = useState(initialState);
   const [isLoading, setIsLoading] = useState(false);
   const authToken = useSelector((state) => state.user.value.authToken);
+  const barbers = useSelector((state) => state.barbers.value);
 
   const toast = useToast();
   const dispatch = useDispatch();
@@ -45,28 +47,43 @@ const AddJobModal = ({ children }) => {
     setNewJob({ ...newJob, [e.target.name]: e.target.value });
   };
 
+  const handleSelectChange = (selectedOptions, fieldName) => {
+    if (fieldName === "service") {
+      // Convert the array of selected options to a string (comma-separated)
+      const selectedServices = selectedOptions
+        .map((option) => option.value)
+        .join(", ");
+      setNewJob({ ...newJob, [fieldName]: selectedServices });
+    } else {
+      // For single-select fields (like barber), just set the value
+      setNewJob({ ...newJob, [fieldName]: selectedOptions.value });
+    }
+  };
+
   const initialRef = React.useRef(null);
+  const selectRef = React.useRef(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { barber, name, address, phone, service, date, from, to, price } = newJob;
+    const { barber, name, address, phone, service, date, from, to, price } =
+      newJob;
     if (
-      barber == '' ||
-      name == '' ||
-      address == '' ||
-      phone == '' ||
-      service == '' ||
-      date == '' ||
-      from == '' ||
-      to == '' ||
-      price == ''
+      barber == "" ||
+      name == "" ||
+      address == "" ||
+      phone == "" ||
+      service == "" ||
+      date == "" ||
+      from == "" ||
+      to == "" ||
+      price == ""
     ) {
       toast({
-        title: 'All Fields Are Required..!!',
-        status: 'warning',
-        variant: 'left-accent',
-        position: 'top',
-        duration: '3000',
+        title: "All Fields Are Required..!!",
+        status: "warning",
+        variant: "left-accent",
+        position: "top",
+        duration: "3000",
         isClosable: true,
       });
     } else {
@@ -75,22 +92,23 @@ const AddJobModal = ({ children }) => {
         const res = await addJob(newJob, authToken);
         dispatch(addNewJob(res.data));
         toast({
-          title: 'New job Added',
-          status: 'success',
-          variant: 'left-accent',
-          position: 'top',
-          duration: '3000',
+          title: "New job Added",
+          status: "success",
+          variant: "left-accent",
+          position: "top",
+          duration: "3000",
           isClosable: true,
         });
+        selectRef.current.clearValue();
         setNewJob(initialState);
         setIsLoading(false);
       } catch (error) {
         toast({
           title: error.response.data,
-          status: 'error',
-          variant: 'left-accent',
-          position: 'top',
-          duration: '3000',
+          status: "error",
+          variant: "left-accent",
+          position: "top",
+          duration: "3000",
           isClosable: true,
         });
         console.log(error);
@@ -103,7 +121,7 @@ const AddJobModal = ({ children }) => {
     <>
       <span onClick={onOpen}>{children}</span>
       <Modal
-        scrollBehavior='inside'
+        scrollBehavior="inside"
         isCentered
         initialFocusRef={initialRef}
         finalFocus
@@ -112,7 +130,7 @@ const AddJobModal = ({ children }) => {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader fontSize='26px'>Add a Job</ModalHeader>
+          <ModalHeader fontSize="26px">Add a Job</ModalHeader>
           <Divider />
           <ModalCloseButton />
           <ModalBody pb={6}>
@@ -120,15 +138,13 @@ const AddJobModal = ({ children }) => {
               <FormControl>
                 <FormLabel>Barber</FormLabel>
                 <Select
-                  value={newJob.barber}
-                  ref={initialRef}
-                  onChange={handleChange}
-                  name='barber'
-                  placeholder='Select Barber'
-                >
-                  <option value='amardeep'>Amardeep</option>
-                  <option value='puneet'>Puneet</option>
-                </Select>
+                  options={barbers.map((barber) => ({
+                    value: barber.username,
+                    label: barber.fullName,
+                  }))}
+                  onChange={(e) => handleSelectChange(e, "barber")}
+                  placeholder="Select Barber"
+                />
               </FormControl>
 
               <FormControl mt={4}>
@@ -136,102 +152,89 @@ const AddJobModal = ({ children }) => {
                 <Input
                   required
                   onChange={handleChange}
-                  name='name'
+                  name="name"
                   value={newJob.name}
-                  placeholder='Name'
+                  placeholder="Name"
                 />
               </FormControl>
 
               <FormControl mt={4}>
                 <FormLabel>Address</FormLabel>
                 <Input
-                  name='address'
+                  name="address"
                   value={newJob.address}
                   onChange={handleChange}
-                  placeholder='Address'
+                  placeholder="Address"
                 />
               </FormControl>
 
               <FormControl mt={4}>
                 <FormLabel>Phone Number</FormLabel>
                 <Input
-                  name='phone'
+                  name="phone"
                   value={newJob.phone}
                   onChange={handleChange}
-                  type='tel'
-                  placeholder='Phone Number'
+                  type="tel"
+                  placeholder="Phone Number"
                 />
               </FormControl>
 
               <FormControl mt={4}>
                 <FormLabel>Services</FormLabel>
                 <Select
-                  value={newJob.service}
-                  onChange={handleChange}
-                  name='service'
-                  placeholder='Select Service'
-                >
-                  <option value='Haircut'>Haircut</option>
-                  <option value='Fade Haircut'>Fade Haircut</option>
-                  <option value='Haircut and Beard $60'>Haircut and Beard $60</option>
-                  <option value='Beard'>Beard</option>
-                  <option value='Haircut + Beard + Face wax + Face Scrub'>
-                    Haircut + Beard + Face wax + Face Scrub
-                  </option>
-                  <option value='Haircut + Beard + Face wax'>Haircut + Beard + Face wax</option>
-                  <option value='Beard + Face wax + Face Scrub'>
-                    Beard + Face wax + Face Scrub
-                  </option>
-                  <option value='Haircut + Beard $45'>
-                    Haircut + Beard $45
-                  </option>
-                </Select>
+                  isMulti
+                  options={serviceOptions}
+                  ref={selectRef}
+                  onChange={(e) => handleSelectChange(e, "service")}
+                  closeMenuOnSelect={false}
+                  placeholder="Select Services"
+                />
               </FormControl>
 
               <FormControl mt={4}>
                 <FormLabel>Price</FormLabel>
                 <Input
-                  name='price'
+                  name="price"
                   value={newJob.price}
                   onChange={handleChange}
-                  type='number'
-                  placeholder='Price'
+                  type="number"
+                  placeholder="Price"
                 />
               </FormControl>
 
               <FormControl mt={4}>
                 <FormLabel>Date</FormLabel>
                 <Input
-                  name='date'
+                  name="date"
                   value={newJob.date}
                   onChange={handleChange}
-                  placeholder='Select Date and Time'
-                  size='md'
-                  type='date'
+                  placeholder="Select Date and Time"
+                  size="md"
+                  type="date"
                 />
               </FormControl>
 
               <FormControl mt={4}>
                 <FormLabel>From</FormLabel>
                 <Input
-                  name='from'
+                  name="from"
                   value={newJob.from}
                   onChange={handleChange}
-                  placeholder='Select Date and Time'
-                  size='md'
-                  type='time'
+                  placeholder="Select Date and Time"
+                  size="md"
+                  type="time"
                 />
               </FormControl>
 
               <FormControl mt={4}>
                 <FormLabel>To</FormLabel>
                 <Input
-                  name='to'
+                  name="to"
                   value={newJob.to}
                   onChange={handleChange}
-                  placeholder='Select Date and Time'
-                  size='md'
-                  type='time'
+                  placeholder="Select Date and Time"
+                  size="md"
+                  type="time"
                 />
               </FormControl>
             </form>
@@ -240,9 +243,9 @@ const AddJobModal = ({ children }) => {
             <Button
               isLoading={isLoading}
               onClick={handleSubmit}
-              w='100%'
-              type='submit'
-              colorScheme='orange'
+              w="100%"
+              type="submit"
+              colorScheme="orange"
               mr={3}
             >
               Save

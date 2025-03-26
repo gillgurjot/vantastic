@@ -1,33 +1,20 @@
-import React, { useEffect } from 'react';
-import { Route, Routes, useNavigate } from 'react-router-dom';
-import Admin from './pages/admin';
-import Login from './pages/login/Login';
-import './App.css';
-import Register from './pages/register/Register';
-import { useSelector } from 'react-redux';
-import Barber from './pages/barber';
+import { Route, Routes } from "react-router-dom";
+import Admin from "./pages/admin";
+import Login from "./pages/login/Login";
+import "./App.css";
+import Register from "./pages/register/Register";
+import Barber from "./pages/barber";
+import NotFoundPage from "./pages/notFound";
 
 const App = () => {
-  const user = useSelector((state) => state.user.value);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (user.username && user.isAdmin) {
-      navigate('/admin');
-    } else if (user.username && !user.isAdmin) {
-      navigate('/barber');
-    } else {
-      return;
-    }
-  }, [user, navigate]);
-
   return (
-    <div className='App'>
+    <div className="App">
       <Routes>
-        <Route path='/' element={<Login />} />
-        <Route path='/admin' element={<Admin />} />
-        <Route path='/register' element={<Register />} />
-        <Route path='/barber' element={<Barber />} />
+        <Route path="/" element={<Login />} />
+        <Route path="/admin" element={<Admin />} />
+        <Route path="/admin/register" element={<Register />} />
+        <Route path="/barber" element={<Barber />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </div>
   );

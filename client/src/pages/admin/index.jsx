@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import ViewJobs from './components/ViewJobs';
+import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import Navbar from "./components/Navbar";
+import ViewJobs from "./components/ViewJobs";
 
 const Admin = () => {
   const user = useSelector((state) => state.user.value);
@@ -10,9 +10,9 @@ const Admin = () => {
 
   useEffect(() => {
     if (!user.username) {
-      navigate('/');
+      navigate("/");
     } else if (user.username && !user.isAdmin) {
-      navigate('/barber');
+      navigate("/barber");
     } else {
       return;
     }

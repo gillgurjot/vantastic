@@ -1,7 +1,7 @@
-const { validationResult } = require('express-validator');
-const User = require('../models/userModel');
-const bcrypt = require('bcryptjs');
-const generateToken = require('../helpers/generateToken');
+const { validationResult } = require("express-validator");
+const User = require("../models/userModel");
+const bcrypt = require("bcryptjs");
+const generateToken = require("../helpers/generateToken");
 
 //Register User
 const registerUser = async (req, res) => {
@@ -17,7 +17,7 @@ const registerUser = async (req, res) => {
   try {
     let user = await User.findOne({ username });
     if (user) {
-      res.status(400).json('User already exists');
+      res.status(400).json("User already exists");
     } else {
       const salt = await bcrypt.genSalt(10);
       const secPass = await bcrypt.hash(password, salt);
@@ -37,7 +37,7 @@ const registerUser = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
-    res.status(500).send('Internal server error');
+    res.status(500).send("Internal server error");
     process.exit();
   }
 };
@@ -55,12 +55,12 @@ const userLogin = async (req, res) => {
     const user = await User.findOne({ username });
 
     if (!user) {
-      res.status(401).json('Incorrect Credentials');
+      res.status(401).json("Incorrect Credentials");
     } else {
       const passMatch = await bcrypt.compare(password, user.password);
 
       if (!passMatch) {
-        res.status(401).json('Incorrect Credentials');
+        res.status(401).json("Incorrect Credentials");
       } else {
         res.status(200).json({
           id: user._id,
@@ -73,9 +73,28 @@ const userLogin = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
-    res.status(500).send('Internal server error');
+    res.status(500).send("Internal server error");
     process.exit();
   }
 };
 
-module.exports = { registerUser, userLogin };
+// Get all users
+const getAllUsers = async (req, res) => {
+  const { isAdmin } = req.user;
+  if (!isAdmin) {
+    res.status(401).json("Unauthorized Request");
+    return;
+  }
+  try {
+    const users = await User.find({ isAdmin: { $ne: true } }).select(
+      "id username fullName"
+    );
+    res.status(200).json(users);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Internal server error");
+    process.exit();
+  }
+};
+
+module.exports = { registerUser, userLogin, getAllUsers };

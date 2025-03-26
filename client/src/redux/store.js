@@ -1,11 +1,12 @@
-import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import jobReducer from './slices/jobSlice';
-import userReducer from './slices/userSlice';
-import storage from 'redux-persist/lib/storage';
-import { persistReducer, persistStore } from 'redux-persist';
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import jobReducer from "./slices/jobSlice";
+import userReducer from "./slices/userSlice";
+import barbersReducer from "./slices/barbersSlice";
+import storage from "redux-persist/lib/storage";
+import { persistReducer, persistStore } from "redux-persist";
 
 const persistConfig = {
-  key: 'root',
+  key: "root",
   // blacklist: ['jobs'],
   storage,
 };
@@ -13,6 +14,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
   user: userReducer,
   jobs: jobReducer,
+  barbers: barbersReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
